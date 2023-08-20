@@ -7,7 +7,8 @@ import {
     TypeOfRequestQuery,
     Paginator,
     PostViewModel,
-    APIErrorResult
+    APIErrorResult,
+    TypeOfRequestBody
 } from '../types/models'
 
 import basicAuth from 'express-basic-auth'
@@ -21,9 +22,9 @@ export const postsRouter = Router({})
 
 
 
-postsRouter.post('/', basicAuth({users: admins}), postVdChain, async (req: TypeOfRequestP_Body<{ id: string }, PostInputModel>, res: Response<PostViewModel | APIErrorResult>) => {
+postsRouter.post('/', basicAuth({users: admins}), postVdChain, async (req: TypeOfRequestBody<PostInputModel>, res: Response<PostViewModel | APIErrorResult>) => {
 
-    const result: Result = validationResult(req);
+    const result: Result = validationResult(req)
 
     if (result.isEmpty()) {
         res.status(201).json(await postsService.create(req))

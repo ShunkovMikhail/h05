@@ -8,16 +8,14 @@ import {
 } from '../types/models'
 import { postsRepo } from '../repositories/posts-repository'
 import { DB } from '../repositories/mongo-db'
-import { setDefault } from '../utils/setDefault'
 
 export const postsService = {
 
-    //if called with id param - sets it as blog id
-    async create(req: TypeOfRequestP_Body<{ id: string }, PostInputModel>): Promise<PostViewModel> {
+    async create(req: TypeOfRequestBody<PostInputModel>): Promise<PostViewModel> {
 
         const newEntry: PostViewModel = {
             id: await postsRepo.newID(),
-            blogId: setDefault(req.params.id, req.body.blogId),
+            blogId: req.body.blogId,
             blogName: await DB.getProperty('blogs', req.body.blogId, 'name'),
             title: req.body.title,
             shortDescription: req.body.shortDescription,

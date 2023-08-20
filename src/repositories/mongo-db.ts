@@ -80,8 +80,9 @@ export const DB = {
 
 
 
-//Takes from database actual value for admins and assign it when it gets resolved
+/*
 DB.getAllUnrestricted('admins', {}, {}).then((value) => {
     // @ts-ignore
     admins = Object.fromEntries(value.map(e => [e.login, e.password]))
 })
+*/

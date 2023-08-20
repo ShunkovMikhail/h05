@@ -1,12 +1,14 @@
 import { body } from 'express-validator'
 import { DB } from './repositories/mongo-db'
 
-const urlRGX = new RegExp('^https://([a-zA-Z0-9_-]+\\.)+[a-zA-Z0-9_-]+(\\/[a-zA-Z0-9_-]+)*\\/?$')
+const urlPattern = new RegExp('^https://([a-zA-Z0-9_-]+\\.)+[a-zA-Z0-9_-]+(\\/[a-zA-Z0-9_-]+)*\\/?$')
+const loginPattern = new RegExp('^[a-zA-Z0-9_-]*$')
+const emailPattern = new RegExp('^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$')
 
 
 
-const urlRGXValidation = (value: string) => {
-    if (!urlRGX.test(value)) {
+const patternValidation = (value: string, regex: RegExp) => {
+    if (!regex.test(value)) {
         throw new Error('Incorrect regex!')
     }
     return true
@@ -43,7 +45,7 @@ export const blogVdChain = [
         .bail()
         .isLength({min: 1, max: 100}).withMessage('Too many characters! (maxLength: 100)')
         .bail()
-        .custom(value => urlRGXValidation(value))
+        .custom(value => patternValidation(value, urlPattern))
 
 ]
 
@@ -96,6 +98,50 @@ export const blogPostVdChain = [
         .isLength({min: 1, max: 100}).withMessage('Too many characters! (maxLength: 100)'),
 
     body('content', 'Incorrect format!')
+        .trim()
+        .notEmpty()
+        .bail()
+        .isLength({min: 1, max: 1000}).withMessage('Too many characters! (maxLength: 1000)')
+
+]
+
+
+
+export const userVdChain = [
+
+    body('login', 'Incorrect format!')
+        .trim()
+        .notEmpty()
+        .bail()
+        .isLength({min: 3, max: 10}).withMessage('Incorrect length! (3 - 10)')
+        .bail()
+        .custom(value => patternValidation(value, loginPattern)),
+
+    body('password', 'Incorrect format!')
+        .trim()
+        .notEmpty()
+        .bail()
+        .isLength({min: 6, max: 20}).withMessage('Incorrect length! (6 - 20)'),
+
+    body('email', 'Incorrect format!')
+        .trim()
+        .notEmpty()
+        .bail()
+        .custom(value => patternValidation(value, emailPattern))
+
+]
+
+
+
+export const loginVdChain = [
+
+    body('loginOrEmail', 'Incorrect format!')
+        .trim()
+        .notEmpty()
+        .bail()
+        .isLength({min: 1, max: 1000}).withMessage('Too many characters! (maxLength: 1000)'),
+
+    body('password', 'Incorrect format!')
         .trim()
         .notEmpty()
         .bail()
