@@ -19,8 +19,13 @@ export const usersQueryRepo = {
 
         let loginQuery: object = {}
         let emailQuery: object = {}
+        let query: object = {}
         if (req.query.searchLoginTerm !== undefined) { loginQuery = {'login': { '$regex': req.query.searchLoginTerm, '$options': 'i' }} }
         if (req.query.searchEmailTerm !== undefined) { emailQuery = {'email': { '$regex': req.query.searchEmailTerm, '$options': 'i' }} }
+        if (req.query.searchLoginTerm !== undefined && req.query.searchEmailTerm !== undefined) {
+            query = { $or: [{...loginQuery}, {...emailQuery}] } }
+        else { query = {...loginQuery, ...emailQuery} }
+
         const sortBy = setDefault(req.query.sortBy, 'createdAt')
         const sortDirection = setDefault(req.query.sortDirection, 'desc')
         const pageNumber = parseInt( setDefault(req.query.pageNumber, 1), 10 )
