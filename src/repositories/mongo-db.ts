@@ -60,6 +60,7 @@ export const DB = {
     async clear(): Promise<number> {
         await db.collection('blogs').deleteMany({})
         await db.collection('posts').deleteMany({})
+        await db.collection('users').deleteMany({})
         return 204
     },
 
