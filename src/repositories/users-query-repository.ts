@@ -31,7 +31,7 @@ export const usersQueryRepo = {
         const pageNumber = parseInt( setDefault(req.query.pageNumber, 1), 10 )
         const pageSize = parseInt( setDefault(req.query.pageSize, 10), 10 )
 
-        const resCount = await DB.countResults('users', {...loginQuery, ...emailQuery})
+        const resCount = await DB.countResults('users', query)
         const pCount = Math.ceil(resCount / pageSize)
         const S = (pageNumber - 1) * pageSize
         const L = pageSize
@@ -41,7 +41,7 @@ export const usersQueryRepo = {
             page: pageNumber,
             pageSize: pageSize,
             totalCount: resCount,
-            items: await DB.getAll('users', {...loginQuery, ...emailQuery}, { password: 0 }, {[sortBy]: sortDirection}, S, L) as Array<UserViewModel | null>
+            items: await DB.getAll('users', query, { password: 0 }, {[sortBy]: sortDirection}, S, L) as Array<UserViewModel | null>
         }
 
         return page
