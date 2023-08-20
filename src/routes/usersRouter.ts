@@ -1,19 +1,17 @@
-import {userVdChain} from "../inputValidation";
+import { userVdChain } from '../inputValidation'
 import {
-    APIErrorResult, Paginator,
-    PostInputModel,
-    PostViewModel,
+    Paginator,
     TypeOfRequestBody,
     TypeOfRequestP,
     TypeOfRequestQuery, UserInputModel, UserViewModel
 } from '../types/models'
-import {Response, Router} from "express";
-import {Result, validationResult} from "express-validator";
-import {ErrorMapper} from "../utils/errorMapper";
-import basicAuth from "express-basic-auth";
-import {admins} from "../repositories/mongo-db";
-import {usersService} from "../domain/users-service";
-import {usersQueryRepo} from "../repositories/users-query-repository";
+import { Response, Router } from 'express'
+import { Result, validationResult } from 'express-validator'
+import { ErrorMapper } from '../utils/errorMapper'
+import basicAuth from 'express-basic-auth'
+import { admins } from '../repositories/mongo-db'
+import { usersService } from '../domain/users-service'
+import { usersQueryRepo } from '../repositories/users-query-repository'
 
 export const usersRouter = Router({})
 

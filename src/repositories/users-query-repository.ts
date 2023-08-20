@@ -1,8 +1,6 @@
 import { DB } from './mongo-db'
 import {
     Paginator,
-    PostViewModel,
-    TypeOfRequestP_Query,
     TypeOfRequestQuery,
     UserDataModel,
     UserViewModel
@@ -37,7 +35,7 @@ export const usersQueryRepo = {
             pageSize: pageSize,
             totalCount: resCount,
             items: await DB.getAll('users', {'login': { '$regex': searchLoginTerm, '$options': 'i' }, 'email': { '$regex': searchEmailTerm, '$options': 'i' } },
-                {}, {[sortBy]: sortDirection}, S, L) as Array<UserViewModel | null>
+                { password: 0 }, {[sortBy]: sortDirection}, S, L) as Array<UserViewModel | null>
         }
 
         return page

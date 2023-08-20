@@ -1,14 +1,12 @@
-import {loginVdChain, postVdChain} from "../inputValidation";
+import { loginVdChain } from '../inputValidation'
 import {
-    APIErrorResult,
     LoginInputModel,
     TypeOfRequestBody
-} from "../types/models";
-import {Response, Router} from "express";
-import {Result, validationResult} from "express-validator";
-import {postsService} from "../domain/posts-service";
-import {ErrorMapper} from "../utils/errorMapper";
-import {usersService} from "../domain/users-service";
+} from '../types/models'
+import { Response, Router } from 'express'
+import { Result, validationResult } from 'express-validator'
+import { ErrorMapper } from '../utils/errorMapper'
+import { usersService } from '../domain/users-service'
 
 export const authRouter = Router({})
 

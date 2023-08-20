@@ -79,8 +79,6 @@ export type UserViewModel = {
     createdAt: string
 }
 
-
-
 export type UserDataModel = {
     id: string
     login: string
