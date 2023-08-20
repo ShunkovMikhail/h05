@@ -17,14 +17,16 @@ export const usersQueryRepo = {
         pageNumber: string,
         pageSize: string }>): Promise<Paginator<UserViewModel | null>> {
 
-        const searchLoginTerm = setDefault(req.query.searchLoginTerm, '.')
-        const searchEmailTerm = setDefault(req.query.searchEmailTerm, '.')
+        let loginQuery: object = {}
+        let emailQuery: object = {}
+        if (req.query.searchLoginTerm !== undefined) { loginQuery = {'login': { '$regex': req.query.searchLoginTerm, '$options': 'i' }} }
+        if (req.query.searchEmailTerm !== undefined) { emailQuery = {'email': { '$regex': req.query.searchEmailTerm, '$options': 'i' }} }
         const sortBy = setDefault(req.query.sortBy, 'createdAt')
         const sortDirection = setDefault(req.query.sortDirection, 'desc')
         const pageNumber = parseInt( setDefault(req.query.pageNumber, 1), 10 )
         const pageSize = parseInt( setDefault(req.query.pageSize, 10), 10 )
 
-        const resCount = await DB.countResults('users', {'login': { '$regex': searchLoginTerm, '$options': 'i' }, 'email': { '$regex': searchEmailTerm, '$options': 'i' } })
+        const resCount = await DB.countResults('users', {...loginQuery, ...emailQuery})
         const pCount = Math.ceil(resCount / pageSize)
         const S = (pageNumber - 1) * pageSize
         const L = pageSize
@@ -34,8 +36,7 @@ export const usersQueryRepo = {
             page: pageNumber,
             pageSize: pageSize,
             totalCount: resCount,
-            items: await DB.getAll('users', {'login': { '$regex': searchLoginTerm, '$options': 'i' }, 'email': { '$regex': searchEmailTerm, '$options': 'i' } },
-                { password: 0 }, {[sortBy]: sortDirection}, S, L) as Array<UserViewModel | null>
+            items: await DB.getAll('users', {...loginQuery, ...emailQuery}, { password: 0 }, {[sortBy]: sortDirection}, S, L) as Array<UserViewModel | null>
         }
 
         return page
