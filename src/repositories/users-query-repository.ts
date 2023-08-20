@@ -24,7 +24,7 @@ export const usersQueryRepo = {
         const pageNumber = parseInt( setDefault(req.query.pageNumber, 1), 10 )
         const pageSize = parseInt( setDefault(req.query.pageSize, 10), 10 )
 
-        const resCount = await DB.countResults('users', {})
+        const resCount = await DB.countResults('users', {'login': { '$regex': searchLoginTerm, '$options': 'i' }, 'email': { '$regex': searchEmailTerm, '$options': 'i' } })
         const pCount = Math.ceil(resCount / pageSize)
         const S = (pageNumber - 1) * pageSize
         const L = pageSize

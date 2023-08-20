@@ -16,7 +16,7 @@ authRouter.post('/login', loginVdChain, async (req: TypeOfRequestBody<LoginInput
 
     if (result.isEmpty()) {
         if (await usersService.authenticate(req)) {
-            res.sendStatus(200)
+            res.sendStatus(204)
         } else {
             res.sendStatus(401)
         }
